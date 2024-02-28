@@ -25,7 +25,7 @@ do
 done
 
 #Comprobamos si el proceso indicado es un servicio
-error=$( systemctl list-units --type=service | grep "$srv" )
+error=$( systemctl list-unit-files --type=service | grep "$srv.service" )
 
 if [ -z "$error" ]; then
     echo "$srv no es un servicio"
@@ -107,19 +107,16 @@ do
     "Reiniciar servicio(ultimo estado)" | 6 )
         sudo systemctl try-restart $srv && echo "Servicio $srv reiniciado dejándolo en su último estado."
             ;;
-    ;;
     "Aplicar cambios(servicio activo)" | 7 )
         sudo systemctl reload $srv  && echo "Cambios aplicados dejando el servicio activo."
             ;;
-    ;;
     "Aplicar cambios(ultimo estado del servicio)" | 8 )
         sudo systemctl reload-or-restart $srv  && echo "Cambios aplicados dejando el servicio en su último estado."
             ;;
-    ;;
+
     "Configuracion del desarrallador" | 9 )
         sudo systemctl preset $srv && echo "Configuración del desarrallador aplicada para el servicio $srv."
             ;;
-    ;;
     "Tiempo de carga del sistema" | 10 )
         systemd-analyze
     ;;
