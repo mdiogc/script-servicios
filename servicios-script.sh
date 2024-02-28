@@ -24,7 +24,7 @@ do
     read -p "Indique el nombre del servicio: " srv
 done
 
-#Comprobamos si el processo indicado es un servicio
+#Comprobamos si el proceso indicado es un servicio
 error=$( systemctl list-units --type=service | grep "$srv" )
 
 if [ -z "$error" ]; then
@@ -38,8 +38,8 @@ active=$( systemctl is-active $srv )
 enabled_masked=$( systemctl is-enabled $srv )
 
 if [ "$enabled_masked" == "masked" ]; then
-    masked="esta enmascarado"
-    enabled="esta deshabilitado"
+    masked="está enmascarado"
+    enabled="está deshabilitado"
 else 
     masked="no esta enmascarado"
     enabled=$( systemctl is-enabled $srv )
@@ -98,19 +98,23 @@ do
         systemctl show $srv
     ;;
     "Reiniciar(servicio activo)" | 5 )
-        sudo systemctl restart $srv
+        sudo systemctl restart $srv && echo "Servicio $srv reiniciado dejándolo activo."
     ;;
     "Reiniciar servicio(ultimo estado)" | 6 )
-        sudo systemctl try-restart $srv
+        sudo systemctl try-restart $srv && echo "Servicio $srv reiniciado dejándolo en su último estado."
+            ;;
     ;;
     "Aplicar cambios(servicio activo)" | 7 )
-        sudo systemctl reload $srv
+        sudo systemctl reload $srv  && echo "Cambios aplicados dejando el servicio activo."
+            ;;
     ;;
     "Aplicar cambios(ultimo estado del servicio)" | 8 )
-        sudo systemctl reload-or-restart $srv
+        sudo systemctl reload-or-restart $srv  && echo "Cambios aplicados dejando el servicio en su último estado."
+            ;;
     ;;
     "Configuracion del desarrallador" | 9 )
-        sudo systemctl preset $srv
+        sudo systemctl preset $srv && echo "Configuración del desarrallador aplicada para el servicio $srv."
+            ;;
     ;;
     "Tiempo de carga del sistema" | 10 )
         systemd-analyze
