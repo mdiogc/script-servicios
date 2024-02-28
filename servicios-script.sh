@@ -25,14 +25,15 @@ do
 done
 
 #Comprobamos si el processo indicado es un servicio
-status=$( systemctl status $srv )
+error=$( systemctl list-units --type=service | grep "$srv" )
 
-if [ "$status" =~ 'found.$' ]; then
+if [ -z "$error" ]; then
     echo "$srv no es un servicio"
     exit 10
 fi
 
 #Comprobamos estado del servicio
+status=$( systemctl status $srv)
 active=$( systemctl is-active $srv )
 enabled_masked=$( systemctl is-enabled $srv )
 
