@@ -127,10 +127,10 @@ do
         runlevel
     ;;
     "Apagar equipo" | 13 )
-        sudo systemctl isolate runlevel0.target
+        sudo systemctl reboot
     ;;
     "Reiniciar equipo" | 14 )
-        sudo systemctl isolate runlevel6.target
+        sudo systemctl poweroff
     ;;
     "Salir" | 15 )
         exit
