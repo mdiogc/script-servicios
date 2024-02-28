@@ -53,14 +53,16 @@ echo "$status"
 #Configuramos opciones del menu que dependen del estado del servicio
 if [ "$active" == "inactive" ] && [ "$masked" == "no esta enmascarado" ]; then
     to_active="Activar"
-else 
+elif [ "$active" == "active" ]; then
     to_active="Desactivar"
+else 
+    to_active="No se puede activar processo enmascarado"
 fi
 
-if [ "$enabled" == "enabled" ]; then
-    to_enable="Dishabilitar"
-else
+if [ "$enabled" == "disabled" ]; then
     to_enable="Habilitar"
+else
+    to_enable="Deshabilitar"
 fi
 
 if [ "$masked" == "esta enmascarado" ]; then
@@ -76,8 +78,10 @@ do
     "$to_active" | 1 ) 
         if [ "$to_active" == "Activar" ]; then
             sudo systemctl start $srv
-        else
+        elif [ "$to_active" == "Desactivar" ]; then
             sudo systemctl stop $srv
+        else
+            echo $to_active
         fi
     ;;
     "$to_enable" | 2 )
